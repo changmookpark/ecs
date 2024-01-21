@@ -1,6 +1,6 @@
 package com.ktds.eventlistener.handler;
 
-public interface EventHandler {
+public interface EventHandler<T> {
     
-    public void processEvent();
+    public void processEvent(T event);
 }
