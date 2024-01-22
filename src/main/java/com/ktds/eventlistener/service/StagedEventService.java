@@ -12,6 +12,7 @@ import com.ktds.eventlistener.model.RefinedEvent;
 import com.ktds.eventlistener.model.StagedEvent;
 import com.ktds.eventlistener.repository.ManagedEventRepository;
 import com.ktds.eventlistener.repository.RefinedEventRepository;
+import com.ktds.eventlistener.repository.StagedEventRepository;
 import com.ktds.eventlistener.specification.ManagedEventSpecification;
 import com.ktds.eventlistener.specification.RefinedEventSpecification;
 
@@ -19,6 +20,9 @@ import io.micrometer.common.util.StringUtils;
 
 @Service
 public class StagedEventService {
+
+    @Autowired
+    StagedEventRepository stagedEventRepo;
     
     @Autowired
     RefinedEventRepository refinedEventRepo;
@@ -127,5 +131,38 @@ public class StagedEventService {
         }
 
         return refinedEventOptional;
+    }
+
+    public void updateStagedEvent(StagedEvent event) {
+
+        stagedEventRepo.save(event);
+    }
+
+    public void updateRefinedEvent(RefinedEvent event) {
+        
+        refinedEventRepo.save(event);
+    }
+
+    public void createRefinedByStaged(StagedEvent event) {
+
+        RefinedEvent refinedEvent = new RefinedEvent(
+                event.getEventId(),
+                null,
+                event.getEventDate(),
+                event.getEventDate(),
+                event.getHostName(),
+                event.getIp(),
+                event.getSeverity(),
+                event.getEventCode(),
+                event.getEventTitle(),
+                event.getEventMessage(),
+                event.getEventType(),
+                event.getTriggerId(),
+                event.getMonitorTool(),
+                1,
+                "W",
+                null);
+
+        refinedEventRepo.save(refinedEvent);
     }
 }
