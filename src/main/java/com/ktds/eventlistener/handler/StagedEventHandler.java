@@ -57,19 +57,40 @@ public class StagedEventHandler implements EventHandler<StagedEvent> {
                     throw new Exception();
                 }
             }
+
+            // === 이벤트 중복 검사 완료
+            service.createRefinedByStaged(event);
+
+            event.updatePassFlag("N");
         } catch (DupEventException ex) {
         
             RefinedEvent refinedEvent = optional.get();
             String passMessage = ex.getMessage();
 
             logger.info(String.format("(%s) %s", event.getEventId(), passMessage));
+
+            event.updatePassFlag("Y");
+            event.updatePassMessage(passMessage);
+
+            refinedEvent.updateLastEventDate(event.getEventDate());
+            refinedEvent.updateEventCount(refinedEvent.getEventCount() + 1);
+
+            service.updateRefinedEvent(refinedEvent);
         } catch (Exception ex) {
 
             String passMessage = String.format("Request Error skip (%s)", ex.getClass().getSimpleName());
+
             logger.info(String.format("(%s) %s", event.getEventId(), passMessage));
+
+            event.updatePassFlag("Y");
+            event.updatePassMessage(passMessage);
         } finally {
 
             logger.info(String.format("(%s) Finished handling staged event data...", event.getEventId()));
+
+            event.updateProcFlag("S");
+
+            service.updateStagedEvent(event);
         }
     }
 }
