@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.ktds.eventlistener.handler.StagedEventHandler;
 import com.ktds.eventlistener.model.StagedEvent;
 import com.ktds.eventlistener.util.NotificationUtil;
 
@@ -32,6 +33,9 @@ public class StagedEventListener implements EventListener {
 
     @Autowired
     private JdbcTemplate tpl;
+
+    @Autowired
+    private StagedEventHandler handler;
     
     @PostConstruct
     @Async
@@ -57,6 +61,7 @@ public class StagedEventListener implements EventListener {
 
                             StagedEvent event = NotificationUtil.parseNotification(nt, StagedEvent.class);
                             logger.info("Listen staged event notification : " + objectMapper.writeValueAsString(event));
+                            handler.processEvent(event);
                         } catch (Exception ex) {
                             
                             logger.error(ex.toString());
