@@ -57,4 +57,12 @@ public class RefinedEvent {
     private String procFlag;
 
     private LocalDate procDate;
+
+    public void updateLastEventDate(LocalDate lastEventDate) {
+        this.lastEventDate = lastEventDate;
+    }
+
+    public void updateEventCount(int eventCount) {
+        this.eventCount = eventCount;
+    }
 }

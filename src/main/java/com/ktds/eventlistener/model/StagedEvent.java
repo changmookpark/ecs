@@ -52,4 +52,16 @@ public class StagedEvent {
     private String passFlag;
 
     private String passMessage;
+
+    public void updateProcFlag(String procFlag) {
+        this.procFlag = procFlag;
+    }
+
+    public void updatePassFlag(String passFlag) {
+        this.passFlag = passFlag;
+    }
+
+    public void updatePassMessage(String passMessage) {
+        this.passMessage = passMessage;
+    }
 }
