@@ -40,9 +40,9 @@ public class RefinedEvent {
 
     private String eventCode;
 
-    private String eventMessage;
+    private String eventTitle;
 
-    private String eventInfo;
+    private String eventMessage;
 
     @Column(nullable=false)
     private String eventType;
