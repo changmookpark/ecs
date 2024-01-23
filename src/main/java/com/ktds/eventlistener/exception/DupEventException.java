@@ -18,6 +18,10 @@ public class DupEventException extends Exception {
         this.code = code;
     }
 
+    public int getCode() {
+        return code;
+    }
+
     private static String getMessage(int code) {
 
         String message = "";
