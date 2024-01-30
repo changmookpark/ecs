@@ -3,8 +3,6 @@ package com.ktds.eventlistener.listener;
 import java.sql.Connection;
 import java.sql.Statement;
 
-import javax.annotation.PostConstruct;
-
 import org.postgresql.PGConnection;
 import org.postgresql.PGNotification;
 import org.slf4j.Logger;
@@ -20,6 +18,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.ktds.eventlistener.handler.StagedEventHandler;
 import com.ktds.eventlistener.model.StagedEvent;
 import com.ktds.eventlistener.util.NotificationUtil;
+
+import jakarta.annotation.PostConstruct;
 
 @Component
 public class StagedEventListener implements EventListener {
