@@ -16,8 +16,6 @@ import com.ktds.eventlistener.repository.StagedEventRepository;
 import com.ktds.eventlistener.specification.ManagedEventSpecification;
 import com.ktds.eventlistener.specification.RefinedEventSpecification;
 
-import io.micrometer.common.util.StringUtils;
-
 @Service
 public class StagedEventService {
 
@@ -37,19 +35,19 @@ public class StagedEventService {
         if (event.getEventDate() != null)
             spec = spec.and(RefinedEventSpecification.equalsEventDate(event.getEventDate()));
 
-        if (StringUtils.isNotEmpty(event.getHostName()))
+        if (!event.getHostName().isEmpty())
             spec = spec.and(RefinedEventSpecification.equalsHostName(event.getHostName()));
 
-        if (StringUtils.isNotEmpty(event.getIp()))
+        if (!event.getIp().isEmpty())
             spec = spec.and(RefinedEventSpecification.equalsIp(event.getIp()));
 
-        if (StringUtils.isNotEmpty(event.getEventTitle()))
+        if (!event.getEventTitle().isEmpty())
             spec = spec.and(RefinedEventSpecification.equalsEventTitle(event.getEventTitle()));
 
-        if (StringUtils.isNotEmpty(event.getSeverity()))
+        if (!event.getSeverity().isEmpty())
             spec = spec.and(RefinedEventSpecification.equalsSeverity(event.getSeverity()));
 
-        if (StringUtils.isNotEmpty(event.getEventType()))
+        if (!event.getEventType().isEmpty())
             spec = spec.and(RefinedEventSpecification.equalsEventType(event.getEventType()));
 
         return refinedEventRepo.findOne(spec);
@@ -64,16 +62,16 @@ public class StagedEventService {
             managedSpec = managedSpec.and(ManagedEventSpecification.greaterThanEventDate(yesterday));
         }
 
-        if (StringUtils.isNotEmpty(event.getHostName()))
+        if (!event.getHostName().isEmpty())
             managedSpec = managedSpec.and(ManagedEventSpecification.equalsHostName(event.getHostName()));
 
-        if (StringUtils.isNotEmpty(event.getIp()))
+        if (!event.getIp().isEmpty())
             managedSpec = managedSpec.and(ManagedEventSpecification.equalsIp(event.getIp()));
 
-        if (StringUtils.isNotEmpty(event.getSeverity()))
+        if (!event.getSeverity().isEmpty())
             managedSpec = managedSpec.and(ManagedEventSpecification.equalsSeverity(event.getSeverity()));
 
-        if (StringUtils.isNotEmpty(event.getEventCode()))
+        if (!event.getEventCode().isEmpty())
             managedSpec = managedSpec.and(ManagedEventSpecification.equalsEventCode(event.getEventCode()));
 
         managedSpec = managedSpec.and(ManagedEventSpecification.equalsEventStatus("1"));
@@ -104,16 +102,16 @@ public class StagedEventService {
             managedSpec = managedSpec.and(ManagedEventSpecification.greaterThanEventDate(yesterday));
         }
 
-        if (StringUtils.isNotEmpty(event.getHostName()))
+        if (!event.getHostName().isEmpty())
             managedSpec = managedSpec.and(ManagedEventSpecification.equalsHostName(event.getHostName()));
 
-        if (StringUtils.isNotEmpty(event.getIp()))
+        if (!event.getIp().isEmpty())
             managedSpec = managedSpec.and(ManagedEventSpecification.equalsIp(event.getIp()));
 
-        if (StringUtils.isNotEmpty(event.getSeverity()))
+        if (!event.getSeverity().isEmpty())
             managedSpec = managedSpec.and(ManagedEventSpecification.equalsSeverity(event.getSeverity()));
 
-        if (StringUtils.isNotEmpty(event.getEventCode()))
+        if (!event.getEventCode().isEmpty())
             managedSpec = managedSpec.and(ManagedEventSpecification.equalsEventCode(event.getEventCode()));
 
         Optional<ManagedEvent> managedEventOptional = managedEventRepo.findOne(managedSpec);

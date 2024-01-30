@@ -28,13 +28,13 @@ public class DupEventException extends Exception {
 
         switch(code) {
             case DUP_EVENT:
-                message = "Dup Evnet skip";
+                message = "Dup Event skip";
                 break;
             case DUP_EVENT_IN_PROGRESS:
-                message = "Dup Evnet skip (In Progress)";
+                message = "Dup Event skip (In Progress)";
                 break;
             case DUP_EVENT_PROGRESSED:
-                message = "Dup Evnet skip (Progressed)";
+                message = "Dup Event skip (Progressed)";
                 break;
         }
 
