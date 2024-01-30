@@ -1,6 +1,6 @@
 package com.ktds.eventlistener.specification;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.data.jpa.domain.Specification;
 
@@ -8,7 +8,7 @@ import com.ktds.eventlistener.model.ManagedEvent;
 
 public class ManagedEventSpecification {
 
-    public static Specification<ManagedEvent> greaterThanEventDate(LocalDate date) {
+    public static Specification<ManagedEvent> greaterThanEventDate(LocalDateTime date) {
         return (root, query, CriteriaBuilder) -> CriteriaBuilder.greaterThanOrEqualTo(root.get("eventDate"), date);
     }
     

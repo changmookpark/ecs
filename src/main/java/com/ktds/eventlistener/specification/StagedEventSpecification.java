@@ -1,6 +1,6 @@
 package com.ktds.eventlistener.specification;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.data.jpa.domain.Specification;
 
@@ -8,7 +8,7 @@ import com.ktds.eventlistener.model.StagedEvent;
 
 public class StagedEventSpecification {
 
-    public static Specification<StagedEvent> equalsEventDate(LocalDate eventDate) {
+    public static Specification<StagedEvent> equalsEventDate(LocalDateTime eventDate) {
         return (root, query, CriteriaBuilder) -> CriteriaBuilder.equal(root.get("eventDate"), eventDate);
     }
 

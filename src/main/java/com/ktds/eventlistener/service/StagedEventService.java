@@ -1,6 +1,6 @@
 package com.ktds.eventlistener.service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +58,7 @@ public class StagedEventService {
         Specification<ManagedEvent> managedSpec = (root, query, CriteriaBuilder) -> null;
 
         if (event.getEventDate() != null) {
-            LocalDate yesterday = LocalDate.now().minusDays(1);
+            LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
             managedSpec = managedSpec.and(ManagedEventSpecification.greaterThanEventDate(yesterday));
         }
 
@@ -98,7 +98,7 @@ public class StagedEventService {
         Specification<ManagedEvent> managedSpec = (root, query, CriteriaBuilder) -> null;
 
         if (event.getEventDate() != null) {
-            LocalDate yesterday = LocalDate.now().minusDays(1);
+            LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
             managedSpec = managedSpec.and(ManagedEventSpecification.greaterThanEventDate(yesterday));
         }
 

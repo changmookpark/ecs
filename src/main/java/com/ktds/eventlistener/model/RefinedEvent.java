@@ -1,6 +1,6 @@
 package com.ktds.eventlistener.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,10 +28,10 @@ public class RefinedEvent {
     private String newEventId;
 
     @Column(nullable=false)
-    private LocalDate eventDate;
+    private LocalDateTime eventDate;
 
     @Column(nullable=false)
-    private LocalDate lastEventDate;
+    private LocalDateTime lastEventDate;
 
     private String hostName;
 
@@ -57,9 +57,9 @@ public class RefinedEvent {
 
     private String procFlag;
 
-    private LocalDate procDate;
+    private LocalDateTime procDate;
 
-    public void updateLastEventDate(LocalDate lastEventDate) {
+    public void updateLastEventDate(LocalDateTime lastEventDate) {
         this.lastEventDate = lastEventDate;
     }
 

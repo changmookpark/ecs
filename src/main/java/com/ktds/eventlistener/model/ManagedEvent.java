@@ -1,6 +1,6 @@
 package com.ktds.eventlistener.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,7 +26,7 @@ public class ManagedEvent {
     private String eventId;
 
     @Column(nullable=false)
-    private LocalDate eventDate;
+    private LocalDateTime eventDate;
 
     @Column(nullable=false)
     private String eventStatus;
@@ -52,11 +52,11 @@ public class ManagedEvent {
 
     private String diposerId;
 
-    private LocalDate diposalDate;
+    private LocalDateTime diposalDate;
 
     private String acceptor;
 
     private String acceptorId;
 
-    private LocalDate acceptDate;
+    private LocalDateTime acceptDate;
 }

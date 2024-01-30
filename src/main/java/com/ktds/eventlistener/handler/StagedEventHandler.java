@@ -44,7 +44,7 @@ public class StagedEventHandler implements EventHandler<StagedEvent> {
                     throw new DupEventException(DupEventException.DUP_EVENT_IN_PROGRESS);
                 }
             } else {
-
+                
                 optional = service.findProgressedEvent(event);
 
                 if (optional.isPresent()) {

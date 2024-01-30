@@ -1,6 +1,6 @@
 package com.ktds.eventlistener.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,7 +26,7 @@ public class StagedEvent {
     private String eventId;
 
     @Column(nullable=false)
-    private LocalDate eventDate;
+    private LocalDateTime eventDate;
 
     private String hostName;
 

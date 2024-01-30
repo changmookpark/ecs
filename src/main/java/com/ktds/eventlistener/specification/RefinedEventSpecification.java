@@ -1,6 +1,6 @@
 package com.ktds.eventlistener.specification;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.data.jpa.domain.Specification;
 
@@ -12,7 +12,7 @@ public class RefinedEventSpecification {
         return (root, query, CriteriaBuilder) -> CriteriaBuilder.equal(root.get("newEventId"), newEventId);
     }
     
-    public static Specification<RefinedEvent> equalsEventDate(LocalDate eventDate) {
+    public static Specification<RefinedEvent> equalsEventDate(LocalDateTime eventDate) {
         return (root, query, CriteriaBuilder) -> CriteriaBuilder.equal(root.get("eventDate"), eventDate);
     }
 
