@@ -12,6 +12,8 @@ import com.ktds.eventlistener.model.RefinedEvent;
 import com.ktds.eventlistener.model.StagedEvent;
 import com.ktds.eventlistener.service.StagedEventService;
 
+import jakarta.transaction.Transactional;
+
 @Component
 public class StagedEventHandler implements EventHandler<StagedEvent> {
 
@@ -20,7 +22,7 @@ public class StagedEventHandler implements EventHandler<StagedEvent> {
     @Autowired
     StagedEventService service;
     
-    @javax.transaction.Transactional
+    @Transactional
     public void processEvent(StagedEvent event) {
         
         logger.info(String.format("(%s) Starting to handle staged event data... [%d]", event.getEventId(), ("1".equals(event.getEventType()) ? 1 : 2)));
