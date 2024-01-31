@@ -2,6 +2,8 @@ package com.ktds.eventlistener.handler;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +13,6 @@ import com.ktds.eventlistener.exception.DupEventException;
 import com.ktds.eventlistener.model.RefinedEvent;
 import com.ktds.eventlistener.model.StagedEvent;
 import com.ktds.eventlistener.service.StagedEventService;
-
-import jakarta.transaction.Transactional;
 
 @Component
 public class StagedEventHandler implements EventHandler<StagedEvent> {
