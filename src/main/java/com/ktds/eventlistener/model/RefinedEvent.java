@@ -59,11 +59,23 @@ public class RefinedEvent {
 
     private LocalDateTime procDate;
 
+    public void updateNewEventId(String newEventId) {
+        this.newEventId = newEventId;
+    }
+
     public void updateLastEventDate(LocalDateTime lastEventDate) {
         this.lastEventDate = lastEventDate;
     }
 
     public void updateEventCount(int eventCount) {
         this.eventCount = eventCount;
+    }
+
+    public void updateProcFlag(String procFlag) {
+        this.procFlag = procFlag;
+    }
+
+    public void updateProcDate(LocalDateTime procDate) {
+        this.procDate = procDate;
     }
 }
