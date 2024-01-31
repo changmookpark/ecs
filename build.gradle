@@ -30,3 +30,9 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+bootJar{
+	archivesBaseName = 'stagedListener'
+	archiveFileName = 'stagedListener.jar'
+	archiveVersion = "1.0.0"
+}
