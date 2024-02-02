@@ -3,8 +3,6 @@ package com.ktds.eventlistener.listener;
 import java.sql.Connection;
 import java.sql.Statement;
 
-import javax.annotation.PostConstruct;
-
 import org.postgresql.PGConnection;
 import org.postgresql.PGNotification;
 import org.slf4j.Logger;
