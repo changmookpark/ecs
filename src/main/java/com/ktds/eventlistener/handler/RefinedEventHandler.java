@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.ktds.eventlistener.dto.WebhookDto;
 import com.ktds.eventlistener.model.ManagedEvent;
 import com.ktds.eventlistener.model.RefinedEvent;
 import com.ktds.eventlistener.service.RefinedEventService;
@@ -36,7 +37,8 @@ public class RefinedEventHandler implements EventHandler<RefinedEvent> {
 
                 logger.info(String.format("(%s) New Event Id : %s", event.getEventId(), event.getNewEventId()));
 
-                // CloudWiz 연동
+                WebhookDto webhookDto = service.mapEventToWebhookDTO(event);
+                service.sendWebhook(webhookDto);
                 
             } else {
 
@@ -52,6 +54,9 @@ public class RefinedEventHandler implements EventHandler<RefinedEvent> {
                     service.updateManagedEvent(managedEvent);
 
                     event.updateNewEventId(managedEvent.getEventId());
+
+                    WebhookDto webhookDto = service.mapEventToWebhookDTO(event);
+                    service.sendWebhook(webhookDto);
                 } else {
                     throw new Exception();
                 }
