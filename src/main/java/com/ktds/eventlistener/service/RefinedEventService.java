@@ -16,6 +16,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.ktds.eventlistener.common.EventSeverity;
 import com.ktds.eventlistener.common.EventType;
 import com.ktds.eventlistener.dto.EventDto;
 import com.ktds.eventlistener.dto.HostDto;
@@ -130,7 +131,7 @@ public class RefinedEventService {
             new EventDto(
                 event.getNewEventId(),
                 EventType.fromCode(event.getEventType()).toString(),
-                "Average", // event.getSeverity()
+                EventSeverity.fromCode(event.getSeverity()).toString(),
                 event.getEventDate().toString()
             ),
             new ItemDto("", "", "")
