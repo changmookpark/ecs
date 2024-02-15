@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import com.ktds.eventlistener.model.ManagedEvent;
 import com.ktds.eventlistener.model.RefinedEvent;
 
 public class RefinedEventSpecification {
@@ -38,5 +39,9 @@ public class RefinedEventSpecification {
 
     public static Specification<RefinedEvent> equalsEventType(String eventType) {
         return (root, query, CriteriaBuilder) -> CriteriaBuilder.equal(root.get("eventType"), eventType);
+    }
+
+    public static Specification<ManagedEvent> equalsTriggerId(String triggerId) {
+        return (root, query, CriteriaBuilder) -> CriteriaBuilder.equal(root.get("eventTriggerId"), triggerId);        
     }
 }
