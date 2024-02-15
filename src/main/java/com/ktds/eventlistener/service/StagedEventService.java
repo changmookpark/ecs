@@ -129,6 +129,7 @@ public class StagedEventService {
     public List<RefinedEvent> findProgressedEvent(StagedEvent event) throws Exception {
 
         Specification<ManagedEvent> managedSpec = new Specification<ManagedEvent>() {
+
             @Override
             public Predicate toPredicate(Root<ManagedEvent> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
@@ -154,7 +155,7 @@ public class StagedEventService {
                     predicates.add(criteriaBuilder.equal(root.get("triggerId"), event.getTriggerId()));
 
                 List<Order> orderList = new ArrayList<>();
-                orderList.add(criteriaBuilder.asc(root.get("eventType")));
+                orderList.add(criteriaBuilder.asc(root.get("eventStatus")));
                 orderList.add(criteriaBuilder.asc(root.get("eventDate")));
                 query.orderBy(orderList);
 
