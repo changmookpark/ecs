@@ -18,7 +18,7 @@
 
     <appender name="stagedFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${STAGED_PATH}.%d.{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${STAGED_PATH}.%d.log</fileNamePattern>
         </rollingPolicy>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
@@ -27,7 +27,7 @@
 
     <appender name="refinedFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${REFINED_PATH}.%d.{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${REFINED_PATH}.%d.log</fileNamePattern>
         </rollingPolicy>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
