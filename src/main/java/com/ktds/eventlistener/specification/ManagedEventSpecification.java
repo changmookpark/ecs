@@ -30,5 +30,9 @@ public class ManagedEventSpecification {
 
     public static Specification<ManagedEvent> equalsEventCode(String eventCode) {
         return (root, query, CriteriaBuilder) -> CriteriaBuilder.equal(root.get("eventCode"), eventCode);        
-    }    
+    }
+
+    public static Specification<ManagedEvent> equalsTriggerId(String triggerId) {
+        return (root, query, CriteriaBuilder) -> CriteriaBuilder.equal(root.get("eventTriggerId"), triggerId);        
+    }
 }
