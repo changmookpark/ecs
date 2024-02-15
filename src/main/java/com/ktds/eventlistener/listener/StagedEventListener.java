@@ -24,7 +24,7 @@ import com.ktds.eventlistener.util.NotificationUtil;
 @Component
 public class StagedEventListener implements EventListener {
 
-    private static final Logger logger = LoggerFactory.getLogger(StagedEventListener.class);
+    private static final Logger logger = LoggerFactory.getLogger("stagedLog");
 
     private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 

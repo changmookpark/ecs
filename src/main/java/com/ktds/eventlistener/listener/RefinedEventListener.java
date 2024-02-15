@@ -22,7 +22,7 @@ import com.ktds.eventlistener.util.NotificationUtil;
 @Component
 public class RefinedEventListener implements EventListener {
 
-    private static final Logger logger = LoggerFactory.getLogger(RefinedEventListener.class);
+    private static final Logger logger = LoggerFactory.getLogger("refinedLog");
 
     private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 

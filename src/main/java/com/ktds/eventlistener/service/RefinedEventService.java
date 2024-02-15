@@ -32,7 +32,7 @@ import com.ktds.eventlistener.specification.ManagedEventSpecification;
 @Service
 public class RefinedEventService {
 
-    private static final Logger logger = LoggerFactory.getLogger(RefinedEventService.class);
+    private static final Logger logger = LoggerFactory.getLogger("refinedLog");
 
     private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 

@@ -18,7 +18,7 @@ import com.ktds.eventlistener.service.RefinedEventService;
 @Component
 public class RefinedEventHandler implements EventHandler<RefinedEvent> {
     
-    private static final Logger logger = LoggerFactory.getLogger(RefinedEventHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger("refinedLog");
 
     @Autowired
     RefinedEventService service;
