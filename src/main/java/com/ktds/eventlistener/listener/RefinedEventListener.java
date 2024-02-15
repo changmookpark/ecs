@@ -3,6 +3,8 @@ package com.ktds.eventlistener.listener;
 import java.sql.Connection;
 import java.sql.Statement;
 
+import javax.annotation.PostConstruct;
+
 import org.postgresql.PGConnection;
 import org.postgresql.PGNotification;
 import org.slf4j.Logger;
@@ -35,6 +37,7 @@ public class RefinedEventListener implements EventListener {
     @Autowired
     private RefinedEventHandler handler;
 
+    // @PostConstruct
     @Async
     public void listeningEvent() {
 
