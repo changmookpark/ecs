@@ -3,8 +3,8 @@
     <property resource="application-${spring.profiles.active}.properties" />
     
     <property name="LOG_DIR" value="${profiles.active.log.path}" />
-    <property name="STAGED_PATH" value="${LOG_DIR}/staged" />
-    <property name="REFINED_PATH" value="${LOG_DIR}/refined" />
+    <property name="STAGED_PATH" value="${LOG_DIR}/staged/staged_event_listener" />
+    <property name="REFINED_PATH" value="${LOG_DIR}/refined/refined_event_listener" />
 
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
