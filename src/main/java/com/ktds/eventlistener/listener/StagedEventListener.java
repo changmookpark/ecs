@@ -37,7 +37,7 @@ public class StagedEventListener implements EventListener {
     @Autowired
     private StagedEventHandler handler;
     
-    // @PostConstruct
+    @PostConstruct
     @Async
     public void listeningEvent() {
 

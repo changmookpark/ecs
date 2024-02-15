@@ -8,7 +8,7 @@
     </springProfile>
     
     <property name="STAGED_PATH" value="${LOG_DIR}/staged/staged_event_listener" />
-    <property name="REFINED_PATH" value="${LOG_DIR}/refined/refined_event_listener" />
+    <!--<property name="REFINED_PATH" value="${LOG_DIR}/refined/refined_event_listener" />-->
 
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -25,6 +25,7 @@
         </encoder>
     </appender>
 
+    <!--
     <appender name="refinedFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${REFINED_PATH}.%d.log</fileNamePattern>
@@ -33,14 +34,17 @@
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
+    -->
 
     <logger name="stagedLog" level="INFO">
         <appender-ref ref="stagedFile" />
     </logger>
 
+    <!--
     <logger name="refinedLog" level="INFO">
         <appender-ref ref="refinedFile" />
     </logger>
+    -->
 
     <root level="INFO">
         <appender-ref ref="console" />
