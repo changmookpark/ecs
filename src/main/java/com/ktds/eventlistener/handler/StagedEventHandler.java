@@ -17,7 +17,7 @@ import com.ktds.eventlistener.service.StagedEventService;
 @Component
 public class StagedEventHandler implements EventHandler<StagedEvent> {
 
-    private static final Logger logger = LoggerFactory.getLogger(StagedEventHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger("stagedLog");
 
     @Autowired
     StagedEventService service;
