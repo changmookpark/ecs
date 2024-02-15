@@ -1,8 +1,12 @@
 <configuration>
+    <springProfile name="local">
+        <property name="LOG_DIR" value="./log/listener" />
+    </springProfile>
 
-    <property resource="application-${spring.profiles.active}.properties" />
+    <springProfile name="prod">
+        <property name="LOG_DIR" value="/data/listener" />
+    </springProfile>
     
-    <property name="LOG_DIR" value="${profiles.active.log.path}" />
     <property name="STAGED_PATH" value="${LOG_DIR}/staged/staged_event_listener" />
     <property name="REFINED_PATH" value="${LOG_DIR}/refined/refined_event_listener" />
 
@@ -23,7 +27,7 @@
 
     <appender name="refinedFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${STAGED_PATH}.%d.{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${REFINED_PATH}.%d.{yyyy-MM-dd}.log</fileNamePattern>
         </rollingPolicy>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
