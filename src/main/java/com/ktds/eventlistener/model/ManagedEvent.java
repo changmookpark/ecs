@@ -59,4 +59,9 @@ public class ManagedEvent {
     private String acceptorId;
 
     private LocalDateTime acceptDate;
+
+    public void updateEventStatus(String eventStatus) {
+
+        this.eventStatus = eventStatus;
+    }
 }
