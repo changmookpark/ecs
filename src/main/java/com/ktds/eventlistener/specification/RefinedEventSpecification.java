@@ -42,6 +42,6 @@ public class RefinedEventSpecification {
     }
 
     public static Specification<RefinedEvent> equalsTriggerId(String triggerId) {
-        return (root, query, CriteriaBuilder) -> CriteriaBuilder.equal(root.get("eventTriggerId"), triggerId);        
+        return (root, query, CriteriaBuilder) -> CriteriaBuilder.equal(root.get("triggerId"), triggerId);        
     }
 }

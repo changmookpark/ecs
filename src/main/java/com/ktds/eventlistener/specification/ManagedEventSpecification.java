@@ -33,6 +33,6 @@ public class ManagedEventSpecification {
     }
 
     public static Specification<ManagedEvent> equalsTriggerId(String triggerId) {
-        return (root, query, CriteriaBuilder) -> CriteriaBuilder.equal(root.get("eventTriggerId"), triggerId);        
+        return (root, query, CriteriaBuilder) -> CriteriaBuilder.equal(root.get("triggerId"), triggerId);        
     }
 }
