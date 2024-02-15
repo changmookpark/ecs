@@ -4,6 +4,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,29 +128,39 @@ public class StagedEventService {
 
     public List<RefinedEvent> findProgressedEvent(StagedEvent event) throws Exception {
 
-        Specification<ManagedEvent> managedSpec = (root, query, CriteriaBuilder) -> null;
+        Specification<ManagedEvent> managedSpec = new Specification<ManagedEvent>() {
+            @Override
+            public Predicate toPredicate(Root<ManagedEvent> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<>();
 
-        if (event.getEventDate() != null) {
-            LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
-            managedSpec = managedSpec.and(ManagedEventSpecification.greaterThanEventDate(yesterday));
-        }
+                if (event.getEventDate() != null) {
+                    LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
+                    predicates.add(criteriaBuilder.greaterThan(root.get("eventDate"), yesterday));
+                }
 
-        if (!event.getHostName().isEmpty())
-            managedSpec = managedSpec.and(ManagedEventSpecification.equalsHostName(event.getHostName()));
+                if (!event.getHostName().isEmpty())
+                    predicates.add(criteriaBuilder.equal(root.get("hostName"), event.getHostName()));
 
-        if (!event.getIp().isEmpty())
-            managedSpec = managedSpec.and(ManagedEventSpecification.equalsIp(event.getIp()));
+                if (!event.getIp().isEmpty())
+                    predicates.add(criteriaBuilder.equal(root.get("ip"), event.getIp()));
 
-        if (!event.getSeverity().isEmpty())
-            managedSpec = managedSpec.and(ManagedEventSpecification.equalsSeverity(event.getSeverity()));
+                if (!event.getSeverity().isEmpty())
+                    predicates.add(criteriaBuilder.equal(root.get("severity"), event.getSeverity()));
+        
+                if (!event.getEventCode().isEmpty())
+                    predicates.add(criteriaBuilder.equal(root.get("eventCode"), event.getEventCode()));
+        
+                if ("Looks".equals(event.getMonitorTool()) && !event.getTriggerId().isEmpty())
+                    predicates.add(criteriaBuilder.equal(root.get("triggerId"), event.getTriggerId()));
 
-        if (!event.getEventCode().isEmpty())
-            managedSpec = managedSpec.and(ManagedEventSpecification.equalsEventCode(event.getEventCode()));
+                List<Order> orderList = new ArrayList<>();
+                orderList.add(criteriaBuilder.asc(root.get("eventType")));
+                orderList.add(criteriaBuilder.asc(root.get("eventDate")));
+                query.orderBy(orderList);
 
-        if ("Looks".equals(event.getMonitorTool())) {
-            if (!event.getTriggerId().isEmpty())
-                managedSpec = managedSpec.and(ManagedEventSpecification.equalsTriggerId(event.getTriggerId()));
-        }
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        };
 
         List<ManagedEvent> managedEvents = managedEventRepo.findAll(managedSpec);
         List<RefinedEvent> refinedEvents = new ArrayList<>();
