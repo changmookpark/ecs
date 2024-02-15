@@ -70,6 +70,11 @@ public class RefinedEventService {
         if (!event.getEventCode().isEmpty())
             spec = spec.and(ManagedEventSpecification.equalsEventCode(event.getEventCode()));
 
+        if ("Looks".equals(event.getMonitorTool())) {
+            if (!event.getTriggerId().isEmpty())
+                spec = spec.and(ManagedEventSpecification.equalsTriggerId(event.getTriggerId()));
+        }
+
         spec = spec.and(ManagedEventSpecification.equalsEventStatus("1"));
 
         return managedEventRepo.findOne(spec);
