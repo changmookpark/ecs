@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import com.ktds.eventlistener.model.ManagedEvent;
 import com.ktds.eventlistener.model.RefinedEvent;
 
 public class RefinedEventSpecification {
