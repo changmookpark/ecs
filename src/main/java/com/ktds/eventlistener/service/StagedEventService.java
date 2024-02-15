@@ -1,12 +1,17 @@
 package com.ktds.eventlistener.service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.ktds.eventlistener.model.ManagedEvent;
 import com.ktds.eventlistener.model.RefinedEvent;
 import com.ktds.eventlistener.model.StagedEvent;
@@ -19,6 +24,10 @@ import com.ktds.eventlistener.specification.RefinedEventSpecification;
 @Service
 public class StagedEventService {
 
+    private static final Logger logger = LoggerFactory.getLogger("stagedLog");
+
+    private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+
     @Autowired
     StagedEventRepository stagedEventRepo;
     
@@ -28,7 +37,7 @@ public class StagedEventService {
     @Autowired
     ManagedEventRepository managedEventRepo;
 
-    public Optional<RefinedEvent> findDupEvent(StagedEvent event) {
+    public List<RefinedEvent> findDupEvent(StagedEvent event) throws Exception {
 
         Specification<RefinedEvent> spec = (root, query, CriteriaBuilder) -> null;
 
@@ -50,10 +59,14 @@ public class StagedEventService {
         if (!event.getEventType().isEmpty())
             spec = spec.and(RefinedEventSpecification.equalsEventType(event.getEventType()));
 
-        return refinedEventRepo.findOne(spec);
+        List<RefinedEvent> refinedEvents = refinedEventRepo.findAll(spec);
+
+        logger.info(String.format("(%s) Duplicate event : %s", event.getEventId(), objectMapper.writeValueAsString(refinedEvents)));
+
+        return refinedEvents;
     }
 
-    public Optional<RefinedEvent> findInProgressEvent(StagedEvent event) {
+    public List<RefinedEvent> findInProgressEvent(StagedEvent event) throws Exception {
 
         Specification<ManagedEvent> managedSpec = (root, query, CriteriaBuilder) -> null;
 
@@ -76,24 +89,28 @@ public class StagedEventService {
 
         managedSpec = managedSpec.and(ManagedEventSpecification.equalsEventStatus("1"));
 
-        Optional<ManagedEvent> managedEventOptional = managedEventRepo.findOne(managedSpec);
-        Optional<RefinedEvent> refinedEventOptional  = Optional.empty();
+        List<ManagedEvent> managedEvents = managedEventRepo.findAll(managedSpec);
+        List<RefinedEvent> refinedEvents = new ArrayList<>();
 
-        if (managedEventOptional.isPresent()) {
+        logger.info(String.format("(%s) In progress event (managed) : %s", event.getEventId(), objectMapper.writeValueAsString(managedEvents.isEmpty() ? "" : managedEvents)));
 
-            ManagedEvent maangedEvent = managedEventOptional.get();
+        if (!managedEvents.isEmpty()) {
+
+            ManagedEvent maangedEvent = managedEvents.get(0);
             Specification<RefinedEvent> refinedSpec = (root, query, CriteriaBuilder) -> null;
 
             refinedSpec = refinedSpec.and(RefinedEventSpecification.equalsNewEventId(maangedEvent.getEventId()));
             refinedSpec = refinedSpec.and(RefinedEventSpecification.equalsEventType("1"));
-            
-            refinedEventOptional = refinedEventRepo.findOne(refinedSpec);
+
+            refinedEvents = refinedEventRepo.findAll(refinedSpec);
+
+            logger.info(String.format("(%s) In progress event (refined) : %s", event.getEventId(), objectMapper.writeValueAsString(refinedEvents)));
         }
 
-        return refinedEventOptional;
+        return refinedEvents;
     }
 
-    public Optional<RefinedEvent> findProgressedEvent(StagedEvent event) {
+    public List<RefinedEvent> findProgressedEvent(StagedEvent event) throws Exception {
 
         Specification<ManagedEvent> managedSpec = (root, query, CriteriaBuilder) -> null;
 
@@ -114,21 +131,25 @@ public class StagedEventService {
         if (!event.getEventCode().isEmpty())
             managedSpec = managedSpec.and(ManagedEventSpecification.equalsEventCode(event.getEventCode()));
 
-        Optional<ManagedEvent> managedEventOptional = managedEventRepo.findOne(managedSpec);
-        Optional<RefinedEvent> refinedEventOptional  = Optional.empty();
+        List<ManagedEvent> managedEvents = managedEventRepo.findAll(managedSpec);
+        List<RefinedEvent> refinedEvents = new ArrayList<>();
 
-        if (managedEventOptional.isPresent()) {
+        logger.info(String.format("(%s) Progressed event (managed) : %s", event.getEventId(), objectMapper.writeValueAsString(managedEvents)));
 
-            ManagedEvent managedEvent = managedEventOptional.get();
+        if (!managedEvents.isEmpty()) {
+
+            ManagedEvent managedEvent = managedEvents.get(0);
             Specification<RefinedEvent> refinedSpec = (root, query, CriteriaBuilder) -> null;
 
             refinedSpec = refinedSpec.and(RefinedEventSpecification.equalsNewEventId(managedEvent.getEventId()));
             refinedSpec = refinedSpec.and(RefinedEventSpecification.equalsEventType(managedEvent.getEventStatus()));
 
-            refinedEventOptional = refinedEventRepo.findOne(refinedSpec);
+            refinedEvents = refinedEventRepo.findAll(refinedSpec);
+
+            logger.info(String.format("(%s) Progressed event (refined) : %s", event.getEventId(), objectMapper.writeValueAsString(refinedEvents)));
         }
 
-        return refinedEventOptional;
+        return refinedEvents;
     }
 
     public void updateStagedEvent(StagedEvent event) {

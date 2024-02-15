@@ -1,5 +1,6 @@
 package com.ktds.eventlistener.handler;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -9,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.ktds.eventlistener.exception.DupEventException;
 import com.ktds.eventlistener.model.RefinedEvent;
 import com.ktds.eventlistener.model.StagedEvent;
@@ -19,6 +22,8 @@ public class StagedEventHandler implements EventHandler<StagedEvent> {
 
     private static final Logger logger = LoggerFactory.getLogger("stagedLog");
 
+    private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+
     @Autowired
     StagedEventService service;
     
@@ -26,31 +31,32 @@ public class StagedEventHandler implements EventHandler<StagedEvent> {
     public void processEvent(StagedEvent event) {
         
         logger.info(String.format("(%s) Starting to handle staged event data... [%d]", event.getEventId(), ("1".equals(event.getEventType()) ? 1 : 2)));
-        Optional<RefinedEvent> optional = Optional.empty();
+        List<RefinedEvent> refinedEvents = null;
 
         try {
 
             logger.info(String.format("(%s) Check for duplicate event...", event.getEventId()));
-            optional = service.findDupEvent(event);
 
-            if (optional.isPresent()) {
+            refinedEvents = service.findDupEvent(event);
+
+            if (!refinedEvents.isEmpty()) {
                 throw new DupEventException(DupEventException.DUP_EVENT);
             }
 
             if ("1".equals(event.getEventType())) {
 
                 logger.info(String.format("(%s) Check for duplicate events in progress...", event.getEventId()));
-                optional = service.findInProgressEvent(event);
+                refinedEvents = service.findInProgressEvent(event);
 
-                if (optional.isPresent()) {
+                if (!refinedEvents.isEmpty()) {
                     throw new DupEventException(DupEventException.DUP_EVENT_IN_PROGRESS);
                 }
             } else {
                 
-                optional = service.findProgressedEvent(event);
+                refinedEvents = service.findProgressedEvent(event);
 
-                if (optional.isPresent()) {
-                    if ("2".equals(optional.get().getEventType())) {
+                if (!refinedEvents.isEmpty()) {
+                    if ("2".equals(refinedEvents.get(0).getEventType())) {
                         throw new DupEventException(DupEventException.DUP_EVENT_PROGRESSED);
                     }
                 } else {
@@ -64,7 +70,7 @@ public class StagedEventHandler implements EventHandler<StagedEvent> {
             event.updatePassFlag("N");
         } catch (DupEventException ex) {
         
-            RefinedEvent refinedEvent = optional.get();
+            RefinedEvent refinedEvent = refinedEvents.get(0);
             String passMessage = ex.getMessage();
 
             logger.info(String.format("(%s) %s", event.getEventId(), passMessage));
@@ -81,7 +87,7 @@ public class StagedEventHandler implements EventHandler<StagedEvent> {
             String passMessage = String.format("Request Error skip (%s)", ex.getClass().getSimpleName());
 
             logger.info(String.format("(%s) %s", event.getEventId(), passMessage));
-            logger.info(ex.toString());
+            logger.error("Request Error", ex);
 
             event.updatePassFlag("Y");
             event.updatePassMessage(passMessage);
