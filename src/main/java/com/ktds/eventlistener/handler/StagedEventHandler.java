@@ -1,7 +1,7 @@
 package com.ktds.eventlistener.handler;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -10,8 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.ktds.eventlistener.exception.DupEventException;
 import com.ktds.eventlistener.model.RefinedEvent;
 import com.ktds.eventlistener.model.StagedEvent;
@@ -22,8 +20,6 @@ public class StagedEventHandler implements EventHandler<StagedEvent> {
 
     private static final Logger logger = LoggerFactory.getLogger("stagedLog");
 
-    private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
-
     @Autowired
     StagedEventService service;
     
@@ -31,7 +27,7 @@ public class StagedEventHandler implements EventHandler<StagedEvent> {
     public void processEvent(StagedEvent event) {
         
         logger.info(String.format("(%s) Starting to handle staged event data... [%d]", event.getEventId(), ("1".equals(event.getEventType()) ? 1 : 2)));
-        List<RefinedEvent> refinedEvents = null;
+        List<RefinedEvent> refinedEvents = new ArrayList<>();
 
         try {
 
