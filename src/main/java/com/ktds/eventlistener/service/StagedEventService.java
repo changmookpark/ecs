@@ -59,6 +59,11 @@ public class StagedEventService {
         if (!event.getEventType().isEmpty())
             spec = spec.and(RefinedEventSpecification.equalsEventType(event.getEventType()));
 
+        if ("Looks".equals(event.getMonitorTool())) {
+            if (!event.getTriggerId().isEmpty())
+                spec = spec.and(RefinedEventSpecification.equalsTriggerId(event.getTriggerId()));
+        }
+
         List<RefinedEvent> refinedEvents = refinedEventRepo.findAll(spec);
 
         logger.info(String.format("(%s) Duplicate event : %s", event.getEventId(), objectMapper.writeValueAsString(refinedEvents)));
@@ -86,6 +91,11 @@ public class StagedEventService {
 
         if (!event.getEventCode().isEmpty())
             managedSpec = managedSpec.and(ManagedEventSpecification.equalsEventCode(event.getEventCode()));
+
+        if ("Looks".equals(event.getMonitorTool())) {
+            if (!event.getTriggerId().isEmpty())
+                managedSpec = managedSpec.and(ManagedEventSpecification.equalsTriggerId(event.getTriggerId()));
+        }
 
         managedSpec = managedSpec.and(ManagedEventSpecification.equalsEventStatus("1"));
 
@@ -130,6 +140,11 @@ public class StagedEventService {
 
         if (!event.getEventCode().isEmpty())
             managedSpec = managedSpec.and(ManagedEventSpecification.equalsEventCode(event.getEventCode()));
+
+        if ("Looks".equals(event.getMonitorTool())) {
+            if (!event.getTriggerId().isEmpty())
+                managedSpec = managedSpec.and(ManagedEventSpecification.equalsTriggerId(event.getTriggerId()));
+        }
 
         List<ManagedEvent> managedEvents = managedEventRepo.findAll(managedSpec);
         List<RefinedEvent> refinedEvents = new ArrayList<>();
