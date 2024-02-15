@@ -77,10 +77,11 @@ public class StagedEventHandler implements EventHandler<StagedEvent> {
 
             service.updateRefinedEvent(refinedEvent);
         } catch (Exception ex) {
-
+            
             String passMessage = String.format("Request Error skip (%s)", ex.getClass().getSimpleName());
 
             logger.info(String.format("(%s) %s", event.getEventId(), passMessage));
+            logger.info(ex.toString());
 
             event.updatePassFlag("Y");
             event.updatePassMessage(passMessage);
